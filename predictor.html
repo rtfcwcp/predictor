@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>World Cup Predictor</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #f7f7f7; }
+    h2 { color: #003366; }
+    .group-box { background: white; padding: 15px; margin-bottom: 20px; border-radius: 6px; border: 1px solid #ccc; }
+    label { font-weight: bold; }
+    select, input[type="text"], input[type="number"] {
+        width: 100%; padding: 8px; margin: 6px 0; border: 1px solid #ccc; border-radius: 4px;
+    }
+    button {
+        background: #007bff; color: white; padding: 12px 20px; border: none;
+        border-radius: 4px; cursor: pointer; width: 100%; font-size: 16px;
+    }
+    button:hover { background: #0056b3; }
+</style>
+</head>
+<body>
+
+<h1>World Cup Prediction Game</h1>
+<p>Fill in your predictions below and submit your entry.</p>
+
+<form action="https://formsubmit.co/rtfc.wcp@gmail.com" method="POST">
+
+<input type="hidden" name="_next" value="https://rtfcwcp.github.io/predictor/thankyou.html">
+<input type="hidden" name="_subject" value="New World Cup Prediction Entry">
+<input type="hidden" name="_captcha" value="false">
+
+<h2>Group Winners (12) (2 points per correct answer)</h2>
+
+<script>
+// Build group selectors dynamically
+document.addEventListener("DOMContentLoaded", function () {
+    const teams = {
+        "Group A": ["Mexico", "South Africa", "South Korea", "UEFA Playoff D"],
+        "Group B": ["Canada", "UEFA Playoff A", "Qatar", "Switzerland"],
+        "Group C": ["Brazil", "Morocco", "Haiti", "Scotland"],
+        "Group D": ["USA", "Paraguay", "Australia", "UEFA Playoff C"],
+        "Group E": ["Germany", "Curacao", "Ivory Coast", "Ecuador"],
+        "Group F": ["Netherlands", "Japan", "UEFA Playoff B", "Tunisia"],
+        "Group G": ["Belguim", "Egypt", "Iran", "New Zealand"],
+        "Group H": ["Spain", "Cape Verde", "Saudi Arabia", "Uruguay"],
+        "Group I": ["France", "Senegal", "FIFA Playoff 2", "Norway"],
+        "Group J": ["Argentina", "Algeria", "Austria", "Jordan"],
+        "Group K": ["Portugal", "FIFA Playoff 1", "Uzbekistan", "Colombia"],
+        "Group L": ["England", "Croatia", "Ghana", "Panama"]
+    };
+
+    const container = document.getElementById("groups");
+
+    for (const group in teams) {
+        let box = document.createElement("div");
+        box.className = "group-box";
+
+        let label = document.createElement("label");
+        label.textContent = group + " Winner";
+        box.appendChild(label);
+
+        let select = document.createElement("select");
+        select.name = group.replace(" ", "_") + "_Winner";
+
+        teams[group].forEach(team => {
+            let option = document.createElement("option");
+            option.value = team;
+            option.textContent = team;
+            select.appendChild(option);
+        });
+
+        box.appendChild(select);
+        container.appendChild(box);
+    }
+
+    // Create team list for knockout dropdowns
+    const allTeams = Object.values(teams).flat();
+    const knockoutSelects = document.querySelectorAll(".knockout");
+
+    knockoutSelects.forEach(select => {
+        allTeams.forEach(team => {
+            let opt = document.createElement("option");
+            opt.value = team;
+            opt.textContent = team;
+            select.appendChild(opt);
+        });
+    });
+
+});
+</script>
+
+<div id="groups"></div>
+
+<hr>
+
+<h2>Semi Finalists (4) (2 points per correct answer)</h2>
+<select class="knockout" name="Semi_Finalist_1"></select>
+<select class="knockout" name="Semi_Finalist_2"></select>
+<select class="knockout" name="Semi_Finalist_3"></select>
+<select class="knockout" name="Semi_Finalist_4"></select>
+
+<h2>Finalists (2) (2 points per correct answer)</h2>
+<select class="knockout" name="Finalist_1"></select>
+<select class="knockout" name="Finalist_2"></select>
+
+<h2>World Cup Winner (2 points per correct answer)</h2>
+<select class="knockout" name="Winner"></select>
+
+<h2>Golden Boot Winner (Player) (2 points per correct answer)</h2>
+<input type="text" name="Golden_Boot" placeholder="Enter player's name">
+
+<h2>First Team to Receive a Red Card (2 points per correct answer)</h2>
+<select class="knockout" name="First_Red_Card"></select>
+
+<h2>Tie Breaker — Total Goals in Tournament</h2>
+<input type="number" name="Total_Goals" placeholder="Enter a number">
+
+<h2>Name</h2>
+<input type="text" name="Contact" placeholder="Enter your name">
+
+<h2>Email Address</h2>
+<input type="text" name="Contact" placeholder="Enter your email address">
+
+<br><br>
+<button type="submit">Submit Predictions</button>
+
+</form>
+</body>
+</html>
