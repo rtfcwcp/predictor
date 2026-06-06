@@ -4,37 +4,166 @@
 <meta charset="UTF-8">
 <title>RTFC World Cup Predictor</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <style>
-    body { font-family: Arial, sans-serif; margin: 20px; background: #f7f7f7; }
-    h2 { color: #003366; }
-    .group-box { background: white; padding: 15px; margin-bottom: 20px; border-radius: 6px; border: 1px solid #ccc; }
-    label { font-weight: bold; }
-    select, input[type="text"], input[type="number"] {
-        width: 100%; padding: 8px; margin: 6px 0; border: 1px solid #ccc; border-radius: 4px;
+    body{
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background: #f7f7f7;
+        color:#222;
     }
-    button {
-        background: #007bff; color: white; padding: 12px 20px; border: none;
-        border-radius: 4px; cursor: pointer; width: 100%; font-size: 16px;
+
+    h1{
+        color:#003366;
+        margin-bottom:10px;
     }
-    button:hover { background: #0056b3; }
+
+    h2{
+        color:#003366;
+        margin-top:30px;
+        margin-bottom:10px;
+    }
+
+    .group-box{
+        background:white;
+        padding:15px;
+        margin-bottom:15px;
+        border-radius:6px;
+        border:1px solid #ccc;
+    }
+
+    label{
+        font-weight:bold;
+        display:block;
+        margin-bottom:6px;
+    }
+
+    select,
+    input[type="text"],
+    input[type="email"],
+    input[type="number"]{
+        width:100%;
+        padding:10px;
+        margin:6px 0 12px 0;
+        border:1px solid #ccc;
+        border-radius:4px;
+        font-size:15px;
+        box-sizing:border-box;
+        background:white;
+    }
+
+    button{
+        background:#007bff;
+        color:white;
+        padding:14px 20px;
+        border:none;
+        border-radius:4px;
+        cursor:pointer;
+        width:100%;
+        font-size:16px;
+        font-weight:bold;
+    }
+
+    button:hover{
+        background:#0056b3;
+    }
+
+    hr{
+        margin:35px 0;
+    }
 </style>
 </head>
+
 <body>
 
 <h1>RTFC World Cup Predictor</h1>
 <p>Fill in your predictions below and submit your entry.</p>
 
-<form action="https://formsubmit.co/el/rtfc.wcp@gmail.com" method="POST">
+<!-- IMPORTANT:
+Replace YOUR_EMAIL@gmail.com with your actual email address.
+After first submit, FormSubmit will send an activation email.
+You MUST click the activation link.
+-->
 
-<input type="hidden" name="_next" value="https://rtfcwcp.github.io/predictor/thankyou.html">
-<input type="hidden" name="_subject" value="New World Cup Prediction Entry">
-<input type="hidden" name="_captcha" value="false">
+<form action="https://formsubmit.co/rtfc.wcp@gmail.com" method="POST">
 
-<h2>Group Winners (12) (2 points per correct answer)</h2>
+    <!-- FormSubmit Settings -->
+    <input type="hidden" name="_subject" value="New World Cup Prediction Entry">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_template" value="table">
+    <input type="hidden" name="_next" value="https://rtfcwcp.github.io/predictor/thankyou.html">
+
+    <h2>Group Winners (12) (2 points per correct answer)</h2>
+
+    <div id="groups"></div>
+
+    <hr>
+
+    <h2>Semi Finalists (4) (2 points per correct answer)</h2>
+
+    <select class="knockout" name="Semi_Finalist_1" required></select>
+    <select class="knockout" name="Semi_Finalist_2" required></select>
+    <select class="knockout" name="Semi_Finalist_3" required></select>
+    <select class="knockout" name="Semi_Finalist_4" required></select>
+
+    <h2>Finalists (2) (2 points per correct answer)</h2>
+
+    <select class="knockout" name="Finalist_1" required></select>
+    <select class="knockout" name="Finalist_2" required></select>
+
+    <h2>World Cup Winner (2 points per correct answer)</h2>
+
+    <select class="knockout" name="Winner" required></select>
+
+    <h2>Golden Boot Winner (Player) (2 points per correct answer)</h2>
+
+    <input
+        type="text"
+        name="Golden_Boot"
+        placeholder="Enter player's name"
+        required
+    >
+
+    <h2>First Team to Receive a Red Card (2 points per correct answer)</h2>
+
+    <select class="knockout" name="First_Red_Card" required></select>
+
+    <h2>Tie Breaker - Total Goals in Tournament</h2>
+
+    <input
+        type="number"
+        name="Total_Goals"
+        placeholder="Enter a number"
+        required
+    >
+
+    <h2>Name</h2>
+
+    <input
+        type="text"
+        name="Name"
+        placeholder="Enter your name"
+        required
+    >
+
+    <h2>Email Address</h2>
+
+    <input
+        type="email"
+        name="Email_Address"
+        placeholder="Enter your email address"
+        required
+    >
+
+    <br><br>
+
+    <button type="submit">Submit Predictions</button>
+
+</form>
 
 <script>
-// Build group selectors dynamically
 document.addEventListener("DOMContentLoaded", function () {
+
     const teams = {
         "Group A": ["Mexico", "South Africa", "South Korea", "UEFA Playoff D"],
         "Group B": ["Canada", "UEFA Playoff A", "Qatar", "Switzerland"],
@@ -42,7 +171,7 @@ document.addEventListener("DOMContentLoaded", function () {
         "Group D": ["USA", "Paraguay", "Australia", "UEFA Playoff C"],
         "Group E": ["Germany", "Curacao", "Ivory Coast", "Ecuador"],
         "Group F": ["Netherlands", "Japan", "UEFA Playoff B", "Tunisia"],
-        "Group G": ["Belguim", "Egypt", "Iran", "New Zealand"],
+        "Group G": ["Belgium", "Egypt", "Iran", "New Zealand"],
         "Group H": ["Spain", "Cape Verde", "Saudi Arabia", "Uruguay"],
         "Group I": ["France", "Senegal", "FIFA Playoff 2", "Norway"],
         "Group J": ["Argentina", "Algeria", "Austria", "Jordan"],
@@ -52,19 +181,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const container = document.getElementById("groups");
 
+    // Build Group Winner Selectors
     for (const group in teams) {
-        let box = document.createElement("div");
+
+        const box = document.createElement("div");
         box.className = "group-box";
 
-        let label = document.createElement("label");
+        const label = document.createElement("label");
         label.textContent = group + " Winner";
         box.appendChild(label);
 
-        let select = document.createElement("select");
-        select.name = group.replace(" ", "_") + "_Winner";
+        const select = document.createElement("select");
+        select.name = group.replace(/\s+/g, "_") + "_Winner";
+        select.required = true;
 
+        // Placeholder option
+        const placeholder = document.createElement("option");
+        placeholder.value = "";
+        placeholder.textContent = "-- Select Team --";
+        placeholder.disabled = true;
+        placeholder.selected = true;
+        select.appendChild(placeholder);
+
+        // Team options
         teams[group].forEach(team => {
-            let option = document.createElement("option");
+            const option = document.createElement("option");
             option.value = team;
             option.textContent = team;
             select.appendChild(option);
@@ -74,57 +215,31 @@ document.addEventListener("DOMContentLoaded", function () {
         container.appendChild(box);
     }
 
-    // Create team list for knockout dropdowns
+    // Populate knockout dropdowns
     const allTeams = Object.values(teams).flat();
     const knockoutSelects = document.querySelectorAll(".knockout");
 
     knockoutSelects.forEach(select => {
+
+        // Placeholder
+        const placeholder = document.createElement("option");
+        placeholder.value = "";
+        placeholder.textContent = "-- Select Team --";
+        placeholder.disabled = true;
+        placeholder.selected = true;
+        select.appendChild(placeholder);
+
+        // Teams
         allTeams.forEach(team => {
-            let opt = document.createElement("option");
-            opt.value = team;
-            opt.textContent = team;
-            select.appendChild(opt);
+            const option = document.createElement("option");
+            option.value = team;
+            option.textContent = team;
+            select.appendChild(option);
         });
     });
 
 });
 </script>
 
-<div id="groups"></div>
-
-<hr>
-
-<h2>Semi Finalists (4) (2 points per correct answer)</h2>
-<select class="knockout" name="Semi_Finalist_1"></select>
-<select class="knockout" name="Semi_Finalist_2"></select>
-<select class="knockout" name="Semi_Finalist_3"></select>
-<select class="knockout" name="Semi_Finalist_4"></select>
-
-<h2>Finalists (2) (2 points per correct answer)</h2>
-<select class="knockout" name="Finalist_1"></select>
-<select class="knockout" name="Finalist_2"></select>
-
-<h2>World Cup Winner (2 points per correct answer)</h2>
-<select class="knockout" name="Winner"></select>
-
-<h2>Golden Boot Winner (Player) (2 points per correct answer)</h2>
-<input type="text" name="Golden_Boot" placeholder="Enter player's name">
-
-<h2>First Team to Receive a Red Card (2 points per correct answer)</h2>
-<select class="knockout" name="First_Red_Card"></select>
-
-<h2>Tie Breaker - Total Goals in Tournament</h2>
-<input type="number" name="Total_Goals" placeholder="Enter a number">
-
-<h2>Name</h2>
-<input type="text" name="Name" placeholder="Enter your name">
-
-<h2>Email Address</h2>
-<input type="text" name="Email_Address" placeholder="Enter your email address">
-
-<br><br>
-<button type="submit">Submit Predictions</button>
-
-</form>
 </body>
 </html>
