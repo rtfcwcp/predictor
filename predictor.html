@@ -21,7 +21,7 @@
 </head>
 <body>
 
-<h1>Runcorn Town Football Club World Cup Predictor</h1>
+<h1>RTFC World Cup Predictor</h1>
 <p>Fill in your predictions below and submit your entry.</p>
 
 <form action="https://formsubmit.co/el/wowoze" method="POST">
@@ -36,17 +36,17 @@
 // Build group selectors dynamically
 document.addEventListener("DOMContentLoaded", function () {
     const teams = {
-        "Group A": ["Mexico", "South Africa", "South Korea", "Czechia"],
-        "Group B": ["Canada", "Bosnia and Herzegovina", "Qatar", "Switzerland"],
+        "Group A": ["Mexico", "South Africa", "South Korea", "UEFA Playoff D"],
+        "Group B": ["Canada", "UEFA Playoff A", "Qatar", "Switzerland"],
         "Group C": ["Brazil", "Morocco", "Haiti", "Scotland"],
-        "Group D": ["USA", "Paraguay", "Australia", "Turkey"],
+        "Group D": ["USA", "Paraguay", "Australia", "UEFA Playoff C"],
         "Group E": ["Germany", "Curacao", "Ivory Coast", "Ecuador"],
-        "Group F": ["Netherlands", "Japan", "Sweden", "Tunisia"],
+        "Group F": ["Netherlands", "Japan", "UEFA Playoff B", "Tunisia"],
         "Group G": ["Belguim", "Egypt", "Iran", "New Zealand"],
         "Group H": ["Spain", "Cape Verde", "Saudi Arabia", "Uruguay"],
-        "Group I": ["France", "Senegal", "Iraq", "Norway"],
+        "Group I": ["France", "Senegal", "FIFA Playoff 2", "Norway"],
         "Group J": ["Argentina", "Algeria", "Austria", "Jordan"],
-        "Group K": ["Portugal", "DR Congo", "Uzbekistan", "Colombia"],
+        "Group K": ["Portugal", "FIFA Playoff 1", "Uzbekistan", "Colombia"],
         "Group L": ["England", "Croatia", "Ghana", "Panama"]
     };
 
@@ -113,7 +113,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <h2>First Team to Receive a Red Card (2 points per correct answer)</h2>
 <select class="knockout" name="First_Red_Card"></select>
 
-<h2>Tie Breaker - Total number of goals scored in the Tournament</h2>
+<h2>Tie Breaker - Total Goals in Tournament</h2>
 <input type="number" name="Total_Goals" placeholder="Enter a number">
 
 <h2>Name</h2>
