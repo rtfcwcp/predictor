@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>RTFC World Cup Predictor</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+    body{
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background: #f7f7f7;
+        color:#222;
+    }
+
+    h1{
+        color:#003366;
+        margin-bottom:10px;
+    }
+
+    h2{
+        color:#003366;
+        margin-top:30px;
+        margin-bottom:10px;
+    }
+
+    .group-box{
+        background:white;
+        padding:15px;
+        margin-bottom:15px;
+        border-radius:6px;
+        border:1px solid #ccc;
+    }
+
+    label{
+        font-weight:bold;
+        display:block;
+        margin-bottom:6px;
+    }
+
+    select,
+    input[type="text"],
+    input[type="email"],
+    input[type="number"]{
+        width:100%;
+        padding:10px;
+        margin:6px 0 12px 0;
+        border:1px solid #ccc;
+        border-radius:4px;
+        font-size:15px;
+        box-sizing:border-box;
+        background:white;
+    }
+
+    button{
+        background:#007bff;
+        color:white;
+        padding:14px 20px;
+        border:none;
+        border-radius:4px;
+        cursor:pointer;
+        width:100%;
+        font-size:16px;
+        font-weight:bold;
+    }
+
+    button:hover{
+        background:#0056b3;
+    }
+
+    hr{
+        margin:35px 0;
+    }
+</style>
+</head>
+
+<body>
+
+<h1>Runcorn Town Football Club World Cup Predictor</h1>
+<p>Fill in your predictions below and submit your entry.</p>
+
+<!-- IMPORTANT:
+Replace YOUR_EMAIL@gmail.com with your actual email address.
+After first submit, FormSubmit will send an activation email.
+You MUST click the activation link.
+-->
+
+<form action="https://formsubmit.co/rtfc.wcp@gmail.com" method="POST">
+
+    <!-- FormSubmit Settings -->
+    <input type="hidden" name="_subject" value="New World Cup Prediction Entry">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_next" value="https://rtfcwcp.github.io/predictor/thankyou.html">
+
+    <h2>Group Winners (12) (2 points per correct answer)</h2>
+
+    <div id="groups"></div>
+
+    <hr>
+
+    <h2>Semi Finalists (4) (2 points per correct answer)</h2>
+
+    <select class="knockout" name="Semi_Finalist_1" required></select>
+    <select class="knockout" name="Semi_Finalist_2" required></select>
+    <select class="knockout" name="Semi_Finalist_3" required></select>
+    <select class="knockout" name="Semi_Finalist_4" required></select>
+
+    <h2>Finalists (2) (2 points per correct answer)</h2>
+
+    <select class="knockout" name="Finalist_1" required></select>
+    <select class="knockout" name="Finalist_2" required></select>
+
+    <h2>World Cup Winner (2 points per correct answer)</h2>
+
+    <select class="knockout" name="Winner" required></select>
+
+    <h2>Golden Boot Winner (Player) (2 points per correct answer)</h2>
+
+    <input
+        type="text"
+        name="Golden_Boot"
+        placeholder="Enter player's name"
+        required
+    >
+
+    <h2>First Team to Receive a Red Card (2 points per correct answer)</h2>
+
+    <select class="knockout" name="First_Red_Card" required></select>
+
+    <h2>Tie Breaker - Total Goals in Tournament</h2>
+
+    <input
+        type="number"
+        name="Total_Goals"
+        placeholder="Enter a number"
+        required
+    >
+
+    <h2>Name</h2>
+
+    <input
+        type="text"
+        name="Name"
+        placeholder="Enter your name"
+        required
+    >
+
+    <h2>Email Address</h2>
+
+    <input
+        type="email"
+        name="Email_Address"
+        placeholder="Enter your email address"
+        required
+    >
+
+    <br><br>
+
+    <button type="submit">Submit Predictions</button>
+
+</form>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const teams = {
+        "Group A": ["Mexico", "South Africa", "South Korea", "Czechia"],
+        "Group B": ["Canada", "Bosnia & Herzegovina", "Qatar", "Switzerland"],
+        "Group C": ["Brazil", "Morocco", "Haiti", "Scotland"],
+        "Group D": ["USA", "Paraguay", "Australia", "Turkey"],
+        "Group E": ["Germany", "Curacao", "Ivory Coast", "Ecuador"],
+        "Group F": ["Netherlands", "Japan", "Sweden", "Tunisia"],
+        "Group G": ["Belgium", "Egypt", "Iran", "New Zealand"],
+        "Group H": ["Spain", "Cape Verde", "Saudi Arabia", "Uruguay"],
+        "Group I": ["France", "Senegal", "Iraq", "Norway"],
+        "Group J": ["Argentina", "Algeria", "Austria", "Jordan"],
+        "Group K": ["Portugal", "DR Congo", "Uzbekistan", "Colombia"],
+        "Group L": ["England", "Croatia", "Ghana", "Panama"]
+    };
+
+    const container = document.getElementById("groups");
+
+    // Build Group Winner Selectors
+    for (const group in teams) {
+
+        const box = document.createElement("div");
+        box.className = "group-box";
+
+        const label = document.createElement("label");
+        label.textContent = group + " Winner";
+        box.appendChild(label);
+
+        const select = document.createElement("select");
+        select.name = group.replace(/\s+/g, "_") + "_Winner";
+        select.required = true;
+
+        // Placeholder option
+        const placeholder = document.createElement("option");
+        placeholder.value = "";
+        placeholder.textContent = "-- Select Team --";
+        placeholder.disabled = true;
+        placeholder.selected = true;
+        select.appendChild(placeholder);
+
+        // Team options
+        teams[group].forEach(team => {
+            const option = document.createElement("option");
+            option.value = team;
+            option.textContent = team;
+            select.appendChild(option);
+        });
+
+        box.appendChild(select);
+        container.appendChild(box);
+    }
+
+    // Populate knockout dropdowns
+    const allTeams = Object.values(teams).flat();
+    const knockoutSelects = document.querySelectorAll(".knockout");
+
+    knockoutSelects.forEach(select => {
+
+        // Placeholder
+        const placeholder = document.createElement("option");
+        placeholder.value = "";
+        placeholder.textContent = "-- Select Team --";
+        placeholder.disabled = true;
+        placeholder.selected = true;
+        select.appendChild(placeholder);
+
+        // Teams
+        allTeams.forEach(team => {
+            const option = document.createElement("option");
+            option.value = team;
+            option.textContent = team;
+            select.appendChild(option);
+        });
+    });
+
+});
+</script>
+
+</body>
+</html>
